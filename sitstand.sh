@@ -117,7 +117,7 @@ do
             sleep 0
         fi
 
-        sleep 5s
+        sleep 1m
 
         CURRENTCYCLELEN=$(( ${CURRENTCYCLELEN} - 1 ))
         OVERALLTIME=$(( ${OVERALLTIME} - 1 ))
