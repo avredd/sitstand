@@ -5,12 +5,12 @@ clear
 CYCLELEN1=${1-30}
 CYCLES=${2-1}
 CYCLELEN2=${3-0}
-CYCLEFLAG=false
+CYCLEFLAG=0
 CURRENTCYCLE=${1}
 CURRENTCYCLELEN=${1}
 ALTCYCLEFLAG=false
 STARTTIME=`date +"%r"`
-FINISH=`date -d "today + $((CYCLELEN1 * CYCLES)) minutes" +'%r'`
+OVERALLFINISH=`date -d "today + $((CYCLELEN1 * CYCLES)) minutes" +'%r'`
 CYCLEFINISH=`date -d "today + ${CYCLELEN1} minutes" +'%r'` 
 TOTALCYCLETIME=0
 
@@ -93,7 +93,7 @@ do
 
         # CYCLE TIME KEEPING
 
-        if [  $CYCLEFLAG -ge 1 ]
+        if [  ${CYCLEFLAG} -ge 1 ]
         then
             echo ::CYCLES::
             echo Cycle began at ${CYCLESTART}.
