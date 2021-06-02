@@ -1,7 +1,7 @@
 # sitstand
 
-sitstand is a shell script I made to remind myself when I have had enough
-sitting and when I have had enough standing.
+sitstand is a shell script I made to remind myself when I've had enough
+sitting and when I've had enough standing.
 
 ## Running It
 ```
@@ -10,6 +10,10 @@ chmod +x sitstand.sh
 ```
 
 Press CTRL + C to exit the script at any time.
+
+Some variables should be modified before executing for best functionality.
+Script can send IFTTT notifications if you have a webhooks notification set up
+and a key for it to use.
 
 ## How it works
 

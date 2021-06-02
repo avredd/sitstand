@@ -2,6 +2,20 @@
 
 clear
 
+# MODIFY THESE VARIABLES
+
+SYSSOUND="/usr/share/sounds/gnome/default/alerts/sonar.ogg" # REPLACE WITH SYSTEM SOUND PATH
+NOTIFMSG="Cycle is complete!"
+
+# OPTIONAL IFTTT INTEGRATION
+
+IFTTTFLAG=0 # SET TO 1 TO USE
+IFTTTKEY="" # IFTTT WEBHOOKS KEY
+IFTTTPREMSG="Cycle is complete!" # IFTTT NOTIFICATION MESSAGE
+IFTTTPOSTMSG=$(echo $IFTTTPREMSG | sed 's/ /%20/g') # DO NOT TOUCH
+
+# VARIABLES
+
 CYCLELEN1=${1-30}
 CYCLES=${2-1}
 CYCLELEN2=${3-0}
@@ -13,6 +27,8 @@ STARTTIME=`date +"%r"`
 OVERALLFINISH=`date -d "today + $((CYCLELEN1 * CYCLES)) minutes" +'%r'`
 CYCLEFINISH=`date -d "today + ${CYCLELEN1} minutes" +'%r'` 
 TOTALCYCLETIME=0
+
+# CHECKS & CALCS
 
 # CHECK IF CYCLES ARE RELEVANT
 
@@ -43,7 +59,7 @@ then
     done                                                                                                                                                                                          
 fi
 
-# SET OVERALL TIME
+# CALCULATE OVERALL TIME
 
 if [ ${ALTCYCLEFLAG} == true ]
 then
@@ -52,14 +68,14 @@ else
     OVERALLTIME=$(( ${CYCLELEN1} * ${CYCLES} ))
 fi
 
-# SET FINISH TIME FOR ALT CYCLES
+# CALCULATE FINISH TIME FOR ALT CYCLES
 
 if [ ${ALTCYCLEFLAG} == true ]
 then
     OVERALLFINISH=`date -d "today + ${TOTALCYCLETIME} minutes" +'%r'`    
 fi
     
-# ENTER CYCLES
+# LOOPS
 
 while [ $CYCLES -ge 1 ]
 do
@@ -123,8 +139,15 @@ do
         OVERALLTIME=$(( ${OVERALLTIME} - 1 ))
     done
 
-    notify-send "Cycle is over!" && play -q /usr/share/sounds/gnome/default/alerts/sonar.ogg &> /dev/null
+    notify-send "${NOTIFMSG}" && play -q ${SYSSOUND} &> /dev/null
     
+    # IFTTT MESSAGE INTEGRATION
+
+    if [ ${IFTTTFLAG} -ge 1 ] 
+    then
+        curl -s -o /dev/null "https://maker.ifttt.com/trigger/notify/with/key/${IFTTTKEY}?value1=${IFTTTPOSTMSG}"
+    fi
+
     CYCLES=$(( ${CYCLES} - 1 ))
     
     # WORLDS MOST INEFFICIENT SWAP FOR ALT CYCLES
@@ -145,6 +168,10 @@ do
     fi
 done
 
-sleep 2s
+if [ ${CYCLES} -ge 2 ]
+then 
+    sleep 1s
+fi
+
 notify-send "Done!"
 echo Done!
