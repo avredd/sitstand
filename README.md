@@ -1,7 +1,7 @@
 # sitstand
 
 sitstand is a poorly assembled shell script I made to remind myself when I've had enough
-sitting and when I've had enough standing. It can function as a regular timer, a timer with multiple cycles, or a timer with cycles of alternating length.
+sitting and when I've had enough standing. It can function as a regular timer, a timer with multiple cycles, or a timer with cycles of alternating length. It sends desktop notifications, plays a noitification sound, and pushes a notification to my phone via IFTTT.
 
 ## Running It
 ```
